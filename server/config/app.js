@@ -29,6 +29,9 @@ mongoDB.on('error', console.error.bind(console, 'DB Connection Error: '));
 mongoDB.once('open', ()=>{
   console.log('Connected to MongoDB...');
 });
+// create seed data - ONCE
+//const generateSeedDB = require('./seeds/index').seedDB;
+//generateSeedDB().then(() => {mongoDB.close()});
 
 // EJS Config
 app.use(expressLayouts);
@@ -69,11 +72,13 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', require('../routes/index'));
 
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
-
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
