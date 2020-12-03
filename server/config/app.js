@@ -3,6 +3,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 const express = require('express');
 let path = require('path');
+const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
 const logger = require('morgan');
 const mongoose = require('mongoose');
@@ -51,6 +52,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '../../node_modules'))); // added to predetermine the path for libraries used inside node modules
 app.use(express.static(path.join(__dirname, '../../public'))); // added to predetermine the path for libraries used inside node modules
 
+// Method Override
+app.use(methodOverride('_method'));
+
 // Express session
 app.use(session({
   secret: 'secret',
@@ -71,13 +75,18 @@ app.use((req, res, next) => {
 
 // Routes
 app.use('/', require('../routes/index'));
+app.use('/campgrounds', require('../routes/campground'));
+
+
 
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use((err, req, res, next) => {
+  res.status(404);
+  res.render('error', { message: err.message });
+  next();
 });
 
 

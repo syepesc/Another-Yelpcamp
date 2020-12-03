@@ -9,8 +9,5 @@ const indexControllers = require('../controllers/index');
 // GET home page
 router.get('/', indexControllers.displayHomePage);
 
-// GET campgrounds page
-router.get('/campgrounds', indexControllers.displayCampgroundsPage);
-
 
 module.exports = router;

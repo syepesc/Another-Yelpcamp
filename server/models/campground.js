@@ -4,7 +4,8 @@ const mongoose = require('mongoose');
 // create a model class
 const CampgroundSchema = mongoose.Schema({
     title: String,
-    price: String,
+    image: String,
+    price: Number,
     description: String,
     location: String
 },
