@@ -5,6 +5,7 @@ const express = require('express');
 let path = require('path');
 const methodOverride = require('method-override');
 const expressLayouts = require('express-ejs-layouts');
+const { ExpressError } = require('./utilities/errorHandler');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
@@ -31,7 +32,7 @@ mongoDB.once('open', ()=>{
   console.log('Connected to MongoDB...');
 });
 // create seed data - ONCE
-//const generateSeedDB = require('./seeds/index').seedDB;
+//const generateSeedDB = require('./utilities/seedDB/index').seedDB;
 //generateSeedDB().then(() => {mongoDB.close()});
 
 // EJS Config
@@ -80,27 +81,21 @@ app.use('/campgrounds', require('../routes/campground'));
 
 
 
-
-
-// catch 404 and forward to error handler
-app.use((err, req, res, next) => {
-  res.status(404);
-  res.render('error', { message: err.message });
-  next();
-});
-
-
 //////////////////////////////////////////////////////////////////////////////////////////
 // ERROR HANDLER
 //////////////////////////////////////////////////////////////////////////////////////////
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// catch 404
+app.all('*', (req, res, next) => {
+  next(new ExpressError(404, 'Page Not Found'));
+})
+
+// handle error
+app.use(function(err, req, res, next) {
+  const { statusCode = 500, message = 'Something went wrong!' } = err;
+  res.status(statusCode);
+  res.render('error', { error: err });
 });
+
 
 module.exports = app;

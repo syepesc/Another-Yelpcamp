@@ -1,3 +1,5 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<div class="alert alert-danger">
+    <h1><%= error.statusCode %> - <%= error.message %></h1>
+    <hr>
+    <pre><%= error.stack %></pre>
+</div>

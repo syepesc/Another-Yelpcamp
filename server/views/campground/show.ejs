@@ -8,7 +8,7 @@
             </div>
             <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= campground.location %></li>
-                <li class="list-group-item">$<%= campground.price %>/night</li>
+                <li class="list-group-item">$<%= campground.price %><small class="text-muted"> /night</small></li>
             </ul>
             <div class="card-body">
                 <a class="card-link btn btn-info" href="/campgrounds/edit/<%= campground._id %>">Edit</a>
