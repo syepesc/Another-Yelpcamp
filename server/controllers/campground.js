@@ -4,13 +4,15 @@ const express = require('express');
 const Campground = require('../models/campground');
 // import error handler
 const { asyncErrorWrapper } = require('../config/utilities/errorHandler');
+// import form validator
+const {campgroundForm } = require('../config/utilities/formValidation');
 
 
 // CAMPGROUNDS CONTROLLERS
 module.exports = {
 
     // GET campgrounds index page
-    displayCampgroundsIndex: asyncErrorWrapper (async (req, res) => {
+    displayAllCampgrounds: asyncErrorWrapper (async (req, res) => {
         const campgrounds = await Campground.find({});
         res.render('campground/index', { title: 'Yelpcamp - Campgrounds', campgrounds: campgrounds });
     }),
@@ -27,7 +29,7 @@ module.exports = {
     }),
 
     // POST add campground page
-    processAddCampground: asyncErrorWrapper (async (req, res) => {
+    addCampground: asyncErrorWrapper (async (req, res) => {
         const newCampground = new Campground(req.body);
         console.log(`new campground: ${newCampground}`);
         await newCampground.save();
@@ -41,14 +43,14 @@ module.exports = {
     }),
 
     // PUT edit campground page
-    processEditCampground: asyncErrorWrapper (async (req, res) => {
+    editCampground: asyncErrorWrapper (async (req, res) => {
         const id = req.params.id; // extract the id from the req.body
         const updatedCampground = await Campground.findByIdAndUpdate(id, req.body); // ... destruct the req.body object (obtain all fields of the form)
         res.redirect(`/campgrounds/${updatedCampground._id}`);
     }),
 
     // DELETE delete campground page
-    processDeleteCampground: asyncErrorWrapper (async (req, res) => {
+    deleteCampground: asyncErrorWrapper (async (req, res) => {
         const id = req.params.id; // extract the id from the req.body
         const updatedCampground = await Campground.findByIdAndDelete(id); // ... destruct the req.body object (obtain all fields of the form)
         res.redirect('/campgrounds');

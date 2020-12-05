@@ -3,17 +3,19 @@ var router = express.Router();
 
 // import index controller
 const campgroundControllers = require('../controllers/campground');
+// import form validation
+const { ...form } = require('../config/utilities/formValidation');
 
 
 // CAMPGROUNDS CONTROLLERS
 // GET campgrounds index page
-router.get('/', campgroundControllers.displayCampgroundsIndex);
+router.get('/', campgroundControllers.displayAllCampgrounds);
 
 // GET add campground page
 router.get('/add', campgroundControllers.displayAddCampground);
 
 // POST add campground page
-router.post('/add', campgroundControllers.processAddCampground);
+router.post('/add', form.validate(form.campgroundForm), campgroundControllers.addCampground);
 
 // GET campground by ID
 router.get('/:id', campgroundControllers.displayCampgroundById);
@@ -22,10 +24,10 @@ router.get('/:id', campgroundControllers.displayCampgroundById);
 router.get('/edit/:id', campgroundControllers.displayEditCampground);
 
 // PUT edit campground page
-router.put('/edit/:id', campgroundControllers.processEditCampground);
+router.put('/edit/:id', form.validate(form.campgroundForm), campgroundControllers.editCampground);
 
 // DELETE edit campground page
-router.delete('/delete/:id', campgroundControllers.processDeleteCampground);
+router.delete('/delete/:id', campgroundControllers.deleteCampground);
 
 
 module.exports = router;
