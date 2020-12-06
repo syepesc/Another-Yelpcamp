@@ -4,8 +4,6 @@ const express = require('express');
 const Campground = require('../models/campground');
 // import error handler
 const { asyncErrorWrapper } = require('../config/utilities/errorHandler');
-// import form validator
-const {campgroundForm } = require('../config/utilities/formValidation');
 
 
 // CAMPGROUNDS CONTROLLERS

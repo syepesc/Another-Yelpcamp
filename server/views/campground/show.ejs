@@ -1,5 +1,6 @@
 <div class="row">
     <div class="col-6 offset-3">
+        <!-- CAMPGROUND -->
         <div class="card mb-3">
             <img src="<%= campground.image %>" class="card-img-top" alt="...">
             <div class="card-body">
@@ -20,5 +21,21 @@
                 2 days ago
             </div>
         </div>
+
+        <!-- REVIEW -->
+        <h2>Leave a Review</h2>
+        <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" novalidate class="validated-form">
+            <div class="mb-3">
+                <label class="form-label" for="rating">Rating</label>
+                <input class="form-range" id="rating" type="range" min="1" max="5" name="rating">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="review">Review</label>
+                <textarea class="form-control" id="review" name="review" cols="50" rows="3" required></textarea>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+            <button type="submit" class="btn btn-success">Submit</button>
+        </form>
     </div>
 </div>

@@ -17,7 +17,7 @@ module.exports.seedDB = async () => {
     await Campground.deleteMany({})
     .then(console.log('All Campgrounds DELETED'));
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 10; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const campground = new Campground({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
