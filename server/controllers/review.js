@@ -11,7 +11,7 @@ const { asyncErrorWrapper } = require('../config/utilities/errorHandler');
 // CAMPGROUNDS CONTROLLERS
 module.exports = {
 
-    // GET reviews
+    // POST reviews
     addReview: asyncErrorWrapper (async (req, res) => {
         const { ...formInput } = req.body;
         const campground = await Campground.findById(req.params.id);
@@ -22,6 +22,7 @@ module.exports = {
         res.redirect(`/campgrounds/${campground._id}`);
     }),
 
+    // POST delete single review
     deleteReview: asyncErrorWrapper(async (req, res) => {
         const { id, reviewId } = req.params;
         await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId } }); // using mongo query to delete an element from an array 

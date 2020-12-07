@@ -5,7 +5,7 @@ var router = express.Router();
 const indexControllers = require('../controllers/index');
 
 
-// INDEX CONTROLLERS
+// INDEX ROUTES
 // GET home page
 router.get('/', indexControllers.displayHomePage);
 
