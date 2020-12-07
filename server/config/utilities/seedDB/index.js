@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 // IMPORT VARIABLES
 // import campground model
 const Campground = require('../../../models/campground');
+// import campground model
+const Review = require('../../../models/review');
 // import cities
 const cities = require('./cities');
 // import cities
@@ -16,6 +18,10 @@ const sample = array => array[Math.floor(Math.random() * array.length)];
 module.exports.seedDB = async () => {
     await Campground.deleteMany({})
     .then(console.log('All Campgrounds DELETED'));
+
+    await Review.deleteMany({})
+    .then(console.log('All Reviews DELETED'));
+
 
     for (let i = 0; i < 10; i++) {
         const random1000 = Math.floor(Math.random() * 1000);

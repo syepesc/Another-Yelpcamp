@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-6 offset-3">
+    <div class="col-6">
         <!-- CAMPGROUND -->
         <div class="card mb-3">
             <img src="<%= campground.image %>" class="card-img-top" alt="...">
@@ -21,8 +21,10 @@
                 2 days ago
             </div>
         </div>
+    </div>
 
-        <!-- REVIEW -->
+    <div class="col-6">
+        <!-- REVIEW FORM -->
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" novalidate class="validated-form">
             <div class="mb-3">
@@ -37,5 +39,20 @@
             </div>
             <button type="submit" class="btn btn-success">Submit</button>
         </form>
+
+        <!-- REVIEWS -->
+        <h3 class="mt-3">Reviews</h3>
+        <% for(let review of campground.reviews) { %> 
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5>Rating: <%= review.rating %></h5>
+                    <p><%= review.review %></p>
+
+                    <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+                </div>
+            </div>
+        <% } %>
     </div>
 </div>

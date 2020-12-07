@@ -17,7 +17,7 @@ module.exports = {
 
     // GET campground by ID page
     displayCampgroundById: asyncErrorWrapper (async (req, res) => {
-        const campground = await Campground.findById(req.params.id);
+        const campground = await Campground.findById(req.params.id).populate('reviews');
         res.render('campground/show', { title: `Yelpcamp - ${campground.title} Campground`, campground: campground });
     }),
 

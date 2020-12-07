@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 // create campground schema model
 const ReviewSchema = Schema({
-    body: String,
+    review: String,
     rating: Number
 },
 {

@@ -28,6 +28,6 @@ module.exports.campgroundForm = Joi.object({
 
 // review schema validation
 module.exports.reviewForm = Joi.object({
-    body: Joi.string().required(),
+    review: Joi.string().required(),
     rating: Joi.number().required().min(0).max(5)
 });

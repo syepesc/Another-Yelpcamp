@@ -3,8 +3,6 @@ var router = express.Router();
 
 // import campground controllers
 const campgroundControllers = require('../controllers/campground');
-// import review controllers
-const reviewControllers = require('../controllers/review');
 // import form validation
 const { ...form } = require('../config/utilities/formValidation');
 
@@ -33,14 +31,6 @@ router.put('/edit/:id', form.validate(form.campgroundForm), campgroundController
 
 // DELETE edit campground page
 router.delete('/delete/:id', campgroundControllers.deleteCampground);
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// REVIEWS CONTROLLERS
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// POST add review
-router.post('/:id/reviews', form.validate(form.reviewForm), reviewControllers.addReview);
 
 
 module.exports = router;

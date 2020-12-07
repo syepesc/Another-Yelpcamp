@@ -77,6 +77,7 @@ app.use((req, res, next) => {
 // Routes
 app.use('/', require('../routes/index'));
 app.use('/campgrounds', require('../routes/campground'));
+app.use('/campgrounds/:id/reviews', require('../routes/review'));
 
 
 

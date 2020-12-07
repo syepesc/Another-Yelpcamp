@@ -15,10 +15,17 @@ module.exports = {
     addReview: asyncErrorWrapper (async (req, res) => {
         const { ...formInput } = req.body;
         const campground = await Campground.findById(req.params.id);
-        const newReview = new Review({ body: formInput.review, rating: formInput.rating });
+        const newReview = new Review({ review: formInput.review, rating: formInput.rating });
         campground.reviews.push(newReview);
         await newReview.save();
         await campground.save();
         res.redirect(`/campgrounds/${campground._id}`);
+    }),
+
+    deleteReview: asyncErrorWrapper(async (req, res) => {
+        const { id, reviewId } = req.params;
+        await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId } }); // using mongo query to delete an element from an array 
+        await Review.findByIdAndDelete(reviewId);
+        res.redirect(`/campgrounds/${id}`)
     })
 }
