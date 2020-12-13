@@ -25,15 +25,15 @@ console.log('App Started...');
 // DB Config
 const DB = process.env.MONGO_URI;
 // Connect to Mongo
-mongoose.connect(DB, {useNewUrlParser: true, useUnifiedTopology: true});
-let mongoDB = mongoose.connection;
-mongoDB.on('error', console.error.bind(console, 'DB Connection Error: '));
-mongoDB.once('open', ()=>{
+mongoose.connect(DB, {useNewUrlParser: true, useUnifiedTopology: true})
+.then(() => {
   console.log('Connected to MongoDB...');
-});
-// create seed data - ONCE
-//const generateSeedDB = require('./utilities/seedDB/index').seedDB;
-//generateSeedDB().then(() => {mongoDB.close()});
+  // create seed data - ONCE
+  const generateSeedDB = require('./utilities/seedDB/index').seedDB;
+  generateSeedDB().then(() => {mongoose.connection.close()});
+})
+.catch(e => {throw new ExpressError(500, e.message)});
+
 
 // EJS Config
 app.use(expressLayouts);

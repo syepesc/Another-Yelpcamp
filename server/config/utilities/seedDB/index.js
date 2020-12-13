@@ -12,10 +12,11 @@ const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 
 
-
+// receive and array and select a random item from the array
 const sample = array => array[Math.floor(Math.random() * array.length)];
 
 module.exports.seedDB = async () => {
+
     await Campground.deleteMany({})
     .then(console.log('All Campgrounds DELETED'));
 
