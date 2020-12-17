@@ -10,6 +10,7 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
+const { Cookie } = require('express-session');
 require('dotenv').config();
 
 // Initialize app with express
@@ -25,14 +26,17 @@ console.log('App Started...');
 // DB Config
 const DB = process.env.MONGO_URI;
 // Connect to Mongo
-mongoose.connect(DB, {useNewUrlParser: true, useUnifiedTopology: true})
-.then(() => {
+mongoose.connect(DB, {useNewUrlParser: true, useUnifiedTopology: true});
+
+const mongoDB = mongoose.connection;
+mongoDB.on('error', console.error.bind(console, 'Connection Error: '));
+mongoDB.once('open', ()=>{
   console.log('Connected to MongoDB...');
+}).then(() => {
   // create seed data - ONCE
-  const generateSeedDB = require('./utilities/seedDB/index').seedDB;
-  generateSeedDB().then(() => {mongoose.connection.close()});
-})
-.catch(e => {throw new ExpressError(500, e.message)});
+  //const generateSeedDB = require('./utilities/seedDB/index').seedDB;
+  //generateSeedDB().then(() => {mongoDB.close().then(() => console.log('MongoDB connection closed.'))});
+}).catch(e => {throw new ExpressError(500, e.message)});
 
 
 // EJS Config
@@ -43,7 +47,7 @@ app.set('view engine', 'ejs');
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// MIDDLEWARE
+// MIDDLEWARES
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // Body parser
@@ -58,9 +62,14 @@ app.use(methodOverride('_method'));
 
 // Express session
 app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    httpOnly: true, // does not reveal cookies in case of cross scripting flaw 
+    expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // (1 week) // milliseconds * seconds * minutes * hours * days
+    maxAge: 1000 * 60 * 60 * 24 * 7 // (1 week)
+  }
 }));
 
 // Connect flash
