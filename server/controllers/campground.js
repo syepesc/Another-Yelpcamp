@@ -18,6 +18,10 @@ module.exports = {
     // GET campground by ID page
     displayCampgroundById: asyncErrorWrapper (async (req, res) => {
         const campground = await Campground.findById(req.params.id).populate('reviews');
+        if(!campground) {
+            req.flash('error_msg', 'Cannot find that Campground!');
+            return res.redirect('/campgrounds');
+        };
         res.render('campground/show', { title: `Yelpcamp - ${campground.title} Campground`, campground: campground });
     }),
 
@@ -31,6 +35,7 @@ module.exports = {
         const newCampground = new Campground(req.body);
         console.log(`new campground: ${newCampground}`);
         await newCampground.save();
+        req.flash('success_msg', 'Campground created!');
         res.redirect(`/campgrounds/${newCampground._id}`);
     }),
 
@@ -44,6 +49,11 @@ module.exports = {
     editCampground: asyncErrorWrapper (async (req, res) => {
         const id = req.params.id; // extract the id from the req.body
         const updatedCampground = await Campground.findByIdAndUpdate(id, req.body); // ... destruct the req.body object (obtain all fields of the form)
+        if(!updatedCampground) {
+            req.flash('error_msg', 'Cannot find that Campground!');
+            return res.redirect('/campgrounds');
+        };
+        req.flash('success_msg', 'Campground updated!');
         res.redirect(`/campgrounds/${updatedCampground._id}`);
     }),
 
@@ -51,6 +61,7 @@ module.exports = {
     deleteCampground: asyncErrorWrapper (async (req, res) => {
         const id = req.params.id; // extract the id from the req.body
         const updatedCampground = await Campground.findByIdAndDelete(id); // ... destruct the req.body object (obtain all fields of the form)
+        req.flash('success_msg', 'Campground deleted!');
         res.redirect('/campgrounds');
     })
 }

@@ -19,6 +19,7 @@ module.exports = {
         campground.reviews.push(newReview);
         await newReview.save();
         await campground.save();
+        req.flash('success_msg', 'Review added!');
         res.redirect(`/campgrounds/${campground._id}`);
     }),
 
@@ -27,6 +28,7 @@ module.exports = {
         const { id, reviewId } = req.params;
         await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId } }); // using mongo query to delete an element from an array 
         await Review.findByIdAndDelete(reviewId);
+        req.flash('success_msg', 'Review deleted!');
         res.redirect(`/campgrounds/${id}`)
     })
 }
