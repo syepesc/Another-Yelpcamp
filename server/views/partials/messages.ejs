@@ -1,15 +1,17 @@
-<% if(success_msg != '') { %> 
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        <%= success_msg %> 
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
+<% if(typeof formErrors != 'undefined') { %>
+    <% formErrors.forEach((error) => { %>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <%= error.msg %> 
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <% }) %>
 <% } %>
 
-<% if(error_msg != '') { %> 
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <%= error_msg %> 
+<% if(success != '') { %> 
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <%= success_msg %> 
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>

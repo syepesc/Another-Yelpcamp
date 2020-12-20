@@ -11,6 +11,7 @@ const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
 const { Cookie } = require('express-session');
+const passport = require('passport');
 require('dotenv').config();
 
 // Initialize app with express
@@ -44,6 +45,8 @@ app.use(expressLayouts);
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 
+// Passport config
+require('./utilities/passport')(passport);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -75,10 +78,13 @@ app.use(session({
 // Connect flash
 app.use(flash());
 
+// Passport - must be AFTER express session
+app.use(passport.initialize());
+app.use(passport.session());
+
 // Global variables
 app.use((req, res, next) => {
-  res.locals.success_msg = req.flash('success_msg');
-  res.locals.error_msg = req.flash('error_msg');
+  res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   next();
 });
