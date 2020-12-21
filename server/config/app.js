@@ -12,6 +12,8 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const { Cookie } = require('express-session');
 const passport = require('passport');
+const chalk = require('chalk');
+const { isEmptyObject } = require('jquery');
 require('dotenv').config();
 
 // Initialize app with express
@@ -50,7 +52,7 @@ require('./utilities/passport')(passport);
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
-// MIDDLEWARES
+// MIDDLEWARE
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // Body parser
@@ -85,9 +87,15 @@ app.use(passport.session());
 // Global variables
 app.use((req, res, next) => {
   // fix for redirecting url
-  if (!['/login', '/'].includes(req.originalUrl)) {
-    req.session.returnTo = req.originalUrl;
+  if (!['/login'].includes(req.originalUrl)) {
+    if (req.query.isEmpty) {
+      req.session.returnTo = req.originalUrl; 
+    } else {
+      req.session.returnTo = req.path;
+    }
   };
+  
+  res.locals.user = req.user ? req.user : ''; // pass user on each request
   res.locals.success = req.flash('success'); // flash success messages
   res.locals.error = req.flash('error'); // flash error messages
   next();

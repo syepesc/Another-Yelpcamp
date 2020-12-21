@@ -13,7 +13,7 @@ module.exports = {
     // GET campgrounds index page
     displayAllCampgrounds: asyncErrorWrapper (async (req, res) => {
         const campgrounds = await Campground.find({});
-        res.render('campground/index', { title: 'Yelpcamp - Campgrounds', campgrounds: campgrounds, user: req.user ? req.user : '' });
+        res.render('campground/index', { title: 'Yelpcamp - Campgrounds', campgrounds: campgrounds });
     }),
 
     // GET campground by ID page
@@ -23,12 +23,12 @@ module.exports = {
             req.flash('error', 'Cannot find that Campground!');
             return res.redirect('/campgrounds');
         };
-        res.render('campground/show', { title: `Yelpcamp - ${campground.title} Campground`, campground: campground, user: req.user ? req.user : '' });
+        res.render('campground/show', { title: `Yelpcamp - ${campground.title} Campground`, campground: campground });
     }),
 
     // GET add campground page
     displayAddCampground: asyncErrorWrapper (async (req, res) => {
-        res.render('campground/add', { title: `Yelpcamp - Add new Campground`, user: req.user ? req.user : '' });
+        res.render('campground/add', { title: `Yelpcamp - Add new Campground` });
     }),
 
     // POST add campground page
@@ -43,7 +43,7 @@ module.exports = {
     // GET edit campground page
     displayEditCampground: asyncErrorWrapper (async (req, res) => {
         const campground = await Campground.findById(req.params.id);
-        res.render('campground/edit', { title: `Yelpcamp - Edit Campground`, campground: campground, user: req.user ? req.user : '' });
+        res.render('campground/edit', { title: `Yelpcamp - Edit Campground`, campground: campground });
     }),
 
     // PUT edit campground page

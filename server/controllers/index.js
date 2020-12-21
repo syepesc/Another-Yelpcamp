@@ -15,17 +15,17 @@ module.exports = {
 
     // GET home page
     displayHomePage: asyncErrorWrapper (async (req, res) => {
-        res.render('home', { title: 'Yelpcamp - Home', user: req.user ? req.user : '' });
+        res.render('home', { title: 'Yelpcamp - Home' });
     }),
 
     // GET login page
     displayLoginPage: asyncErrorWrapper (async (req, res) => {
-        res.render('user/login', { title: 'Yelpcamp - User Login', user: req.user ? req.user : '' });
+        res.render('user/login', { title: 'Yelpcamp - User Login' });
     }),
 
     // GET register page
     displayRegisterPage: asyncErrorWrapper (async (req, res) => {
-        res.render('user/register', { title: 'Yelpcamp - User Registration', user: req.user ? req.user : '' });
+        res.render('user/register', { title: 'Yelpcamp - User Registration' });
     }),
 
     // Register handle
@@ -98,7 +98,6 @@ module.exports = {
     // Login handle
     processUserLogin: asyncErrorWrapper (async (req, res, next) => {
         const redirectUrl = req.session.returnTo || '/campgrounds' // store variable
-        delete req.session.returnTo;
         passport.authenticate('local', {
             successRedirect: redirectUrl,
             successFlash: true,

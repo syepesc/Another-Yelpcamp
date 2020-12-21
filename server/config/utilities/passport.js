@@ -56,7 +56,6 @@ module.exports.ensureAuthentication = function(req, res, next) {
     if(req.isAuthenticated()) {
         return next();
     } else {
-        // create new field on session object to store the original path
         req.flash('error', 'Please login to access this content');
         res.redirect('/login');
     }

@@ -11,6 +11,16 @@ const { asyncErrorWrapper } = require('../config/utilities/errorHandler');
 // CAMPGROUNDS CONTROLLERS
 module.exports = {
 
+    // GET campground reviews
+    displayCampgroundReviews: asyncErrorWrapper (async (req, res) => {
+        const campground = await Campground.findById(req.params.id).populate('reviews');
+        if(!campground) {
+            req.flash('error', 'Cannot find that Campground!');
+            return res.redirect('/campgrounds');
+        };
+        res.render('campground/show', { title: `Yelpcamp - ${campground.title} Campground`, campground: campground });
+    }),
+
     // POST reviews
     addReview: asyncErrorWrapper (async (req, res) => {
         const { ...formInput } = req.body;
