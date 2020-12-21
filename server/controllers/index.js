@@ -6,6 +6,8 @@ const passport = require('passport');
 const { asyncErrorWrapper } = require('../config/utilities/errorHandler');
 // import User model
 const User = require('../models/user');
+// import User model
+const returnToPreviousURL = require('../config/utilities/passport').returnToPreviousURL;
 
 
 // INDEX CONTROLLERS
@@ -13,21 +15,21 @@ module.exports = {
 
     // GET home page
     displayHomePage: asyncErrorWrapper (async (req, res) => {
-        res.render('home', { title: 'Yelpcamp - Home' });
+        res.render('home', { title: 'Yelpcamp - Home', user: req.user ? req.user : '' });
     }),
 
     // GET login page
     displayLoginPage: asyncErrorWrapper (async (req, res) => {
-        res.render('user/login', { title: 'Yelpcamp - User Login' });
+        res.render('user/login', { title: 'Yelpcamp - User Login', user: req.user ? req.user : '' });
     }),
 
     // GET register page
     displayRegisterPage: asyncErrorWrapper (async (req, res) => {
-        res.render('user/register', { title: 'Yelpcamp - User Registration' });
+        res.render('user/register', { title: 'Yelpcamp - User Registration', user: req.user ? req.user : '' });
     }),
 
     // Register handle
-    processUserRegistration: (req, res) => {
+    processUserRegistration: asyncErrorWrapper (async (req, res) => {
         // grab form inputs
         const { email, password } = req.body;
         let formErrors = [];
@@ -91,22 +93,24 @@ module.exports = {
             })
             .catch(err => console.log(err));
         }
-    },
+    }),
 
     // Login handle
-    processUserLogin: (req, res, next) => {
+    processUserLogin: asyncErrorWrapper (async (req, res, next) => {
+        const redirectUrl = req.session.returnTo || '/campgrounds' // store variable
+        delete req.session.returnTo;
         passport.authenticate('local', {
-            successRedirect: req.session.returnTo,
+            successRedirect: redirectUrl,
             successFlash: true,
             failureRedirect: '/login',
             failureFlash: true
         })(req, res, next);
-    },
+    }),
 
     // Logout handle
-    performLogout: (req, res) => {
+    performLogout: asyncErrorWrapper (async (req, res) => {
         req.logOut();
         req.flash('success', 'Logout successfully');
-        res.redirect('/login');
-    }
+        res.redirect('/campgrounds');
+    })
 }

@@ -31,3 +31,9 @@ module.exports.reviewForm = Joi.object({
     review: Joi.string().required(),
     rating: Joi.number().required().min(0).max(5)
 });
+
+// user schema validation
+module.exports.userForm = Joi.object({
+    email: Joi.string().required(),
+    password: Joi.string().required().min(6).max(20)
+});

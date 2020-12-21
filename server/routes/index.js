@@ -3,6 +3,8 @@ var router = express.Router();
 
 // import index controller
 const indexControllers = require('../controllers/index');
+// import form validation
+const { ...form } = require('../config/utilities/formValidation');
 
 
 // INDEX ROUTES
@@ -19,10 +21,11 @@ router.get('/register', indexControllers.displayRegisterPage);
 router.post('/login', indexControllers.processUserLogin);
 
 // POST register page
-router.post('/register', indexControllers.processUserRegistration);
+router.post('/register', form.validate(form.userForm), indexControllers.processUserRegistration);
 
 // GET - Perform user logout
 router.get('/logout', indexControllers.performLogout);
+
 
 
 module.exports = router;

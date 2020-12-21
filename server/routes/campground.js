@@ -5,6 +5,8 @@ var router = express.Router();
 const campgroundControllers = require('../controllers/campground');
 // import form validation
 const { ...form } = require('../config/utilities/formValidation');
+// import ensure authentication
+const ensureAuthentication = require('../config/utilities/passport').ensureAuthentication;
 
 
 
@@ -13,7 +15,7 @@ const { ...form } = require('../config/utilities/formValidation');
 router.get('/', campgroundControllers.displayAllCampgrounds);
 
 // GET add campground page
-router.get('/add', campgroundControllers.displayAddCampground);
+router.get('/add', ensureAuthentication, campgroundControllers.displayAddCampground);
 
 // POST add campground page
 router.post('/add', form.validate(form.campgroundForm), campgroundControllers.addCampground);
@@ -22,13 +24,13 @@ router.post('/add', form.validate(form.campgroundForm), campgroundControllers.ad
 router.get('/:id', campgroundControllers.displayCampgroundById);
 
 // GET edit campground page
-router.get('/edit/:id', campgroundControllers.displayEditCampground);
+router.get('/edit/:id', ensureAuthentication, campgroundControllers.displayEditCampground);
 
 // PUT edit campground page
 router.put('/edit/:id', form.validate(form.campgroundForm), campgroundControllers.editCampground);
 
 // DELETE edit campground page
-router.delete('/delete/:id', campgroundControllers.deleteCampground);
+router.delete('/delete/:id', ensureAuthentication, campgroundControllers.deleteCampground);
 
 
 module.exports = router;

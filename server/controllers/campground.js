@@ -6,28 +6,29 @@ const Campground = require('../models/campground');
 const { asyncErrorWrapper } = require('../config/utilities/errorHandler');
 
 
+
 // CAMPGROUNDS CONTROLLERS
 module.exports = {
 
     // GET campgrounds index page
     displayAllCampgrounds: asyncErrorWrapper (async (req, res) => {
         const campgrounds = await Campground.find({});
-        res.render('campground/index', { title: 'Yelpcamp - Campgrounds', campgrounds: campgrounds });
+        res.render('campground/index', { title: 'Yelpcamp - Campgrounds', campgrounds: campgrounds, user: req.user ? req.user : '' });
     }),
 
     // GET campground by ID page
     displayCampgroundById: asyncErrorWrapper (async (req, res) => {
         const campground = await Campground.findById(req.params.id).populate('reviews');
         if(!campground) {
-            req.flash('error_msg', 'Cannot find that Campground!');
+            req.flash('error', 'Cannot find that Campground!');
             return res.redirect('/campgrounds');
         };
-        res.render('campground/show', { title: `Yelpcamp - ${campground.title} Campground`, campground: campground });
+        res.render('campground/show', { title: `Yelpcamp - ${campground.title} Campground`, campground: campground, user: req.user ? req.user : '' });
     }),
 
     // GET add campground page
     displayAddCampground: asyncErrorWrapper (async (req, res) => {
-        res.render('campground/add', { title: `Yelpcamp - Add new Campground` });
+        res.render('campground/add', { title: `Yelpcamp - Add new Campground`, user: req.user ? req.user : '' });
     }),
 
     // POST add campground page
@@ -35,14 +36,14 @@ module.exports = {
         const newCampground = new Campground(req.body);
         console.log(`new campground: ${newCampground}`);
         await newCampground.save();
-        req.flash('success_msg', 'Campground created!');
+        req.flash('success', 'Campground created!');
         res.redirect(`/campgrounds/${newCampground._id}`);
     }),
 
     // GET edit campground page
     displayEditCampground: asyncErrorWrapper (async (req, res) => {
         const campground = await Campground.findById(req.params.id);
-        res.render('campground/edit', { title: `Yelpcamp - Edit Campground`, campground: campground });
+        res.render('campground/edit', { title: `Yelpcamp - Edit Campground`, campground: campground, user: req.user ? req.user : '' });
     }),
 
     // PUT edit campground page
@@ -50,10 +51,10 @@ module.exports = {
         const id = req.params.id; // extract the id from the req.body
         const updatedCampground = await Campground.findByIdAndUpdate(id, req.body); // ... destruct the req.body object (obtain all fields of the form)
         if(!updatedCampground) {
-            req.flash('error_msg', 'Cannot find that Campground!');
+            req.flash('error', 'Cannot find that Campground!');
             return res.redirect('/campgrounds');
         };
-        req.flash('success_msg', 'Campground updated!');
+        req.flash('success', 'Campground updated!');
         res.redirect(`/campgrounds/${updatedCampground._id}`);
     }),
 
@@ -61,7 +62,7 @@ module.exports = {
     deleteCampground: asyncErrorWrapper (async (req, res) => {
         const id = req.params.id; // extract the id from the req.body
         const updatedCampground = await Campground.findByIdAndDelete(id); // ... destruct the req.body object (obtain all fields of the form)
-        req.flash('success_msg', 'Campground deleted!');
+        req.flash('success', 'Campground deleted!');
         res.redirect('/campgrounds');
     })
 }

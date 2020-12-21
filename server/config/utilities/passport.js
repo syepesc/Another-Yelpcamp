@@ -11,7 +11,7 @@ const bcrypt = require('bcryptjs');
 // Create User schema instance
 const User = require('../../models/user');
 
-module.exports = function(passport) {
+module.exports = (passport) => {
     // Start passport
     passport.use(
         // use passport local strategy
@@ -53,13 +53,11 @@ module.exports = function(passport) {
 }
 
 module.exports.ensureAuthentication = function(req, res, next) {
-    console.log('REQ.USER...', req.user);
     if(req.isAuthenticated()) {
         return next();
     } else {
-        // create new field in session object to return to the page requested before the authentication 
-        req.session.returnTo = req.originalUrl; // its recommended to delete this field using: delete req.session.returnTo
-        req.flash('error', 'Please login to access this page');
-        res.redirect('/users/login');
+        // create new field on session object to store the original path
+        req.flash('error', 'Please login to access this content');
+        res.redirect('/login');
     }
 }

@@ -8,7 +8,7 @@ const { ...form } = require('../config/utilities/formValidation');
 
 
 
-// REVIEWS ROUTES
+// REVIEWS ROUTES -> path: '/campgrounds/:id/reviews'
 // POST add review
 router.post('/', form.validate(form.reviewForm), reviewControllers.addReview);
 
