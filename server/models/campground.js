@@ -18,7 +18,11 @@ const CampgroundSchema = Schema({
     reviews: [{
         type: Schema.Types.ObjectId,
         ref: 'Review'
-    }]
+    }],
+    dateCreated: {
+        type: Date,
+        default: Date.now
+    }
 },
 {
     collection: "campgrounds"
