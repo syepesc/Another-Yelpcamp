@@ -41,7 +41,6 @@ mongoDB.once('open', ()=>{
   //generateSeedDB().then(() => {mongoDB.close().then(() => console.log('MongoDB connection closed.'))});
 }).catch(e => {throw new ExpressError(500, e.message)});
 
-
 // EJS Config
 app.use(expressLayouts);
 app.set('views', path.join(__dirname, '../views'));

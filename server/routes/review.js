@@ -5,8 +5,8 @@ var router = express.Router({mergeParams: true}); // this keeps track of the par
 const reviewControllers = require('../controllers/review');
 // import form validation
 const { ...form } = require('../config/utilities/formValidation');
-// import ensure authentication
-const ensureAuthentication = require('../config/utilities/passport').ensureAuthentication;
+// import middleware
+const { ensureAuthentication, isReviewAuthor } = require('../config/utilities/middleware');
 
 
 
@@ -18,7 +18,7 @@ router.get('/', reviewControllers.displayCampgroundReviews);
 router.post('/', ensureAuthentication, form.validate(form.reviewForm), reviewControllers.addReview);
 
 // DELETE review
-router.delete('/:reviewId', ensureAuthentication, reviewControllers.deleteReview);
+router.delete('/:reviewId', ensureAuthentication, isReviewAuthor, reviewControllers.deleteReview);
 
 
 module.exports = router;

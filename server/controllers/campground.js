@@ -18,7 +18,14 @@ module.exports = {
 
     // GET campground by ID page
     displayCampgroundById: asyncErrorWrapper (async (req, res) => {
-        const campground = await Campground.findById(req.params.id).populate('reviews');
+        const campground = await Campground.findById(req.params.id).populate({
+            // populate review author (mongo commands)
+            path: 'reviews',
+            populate: {
+                path: 'author'
+            }
+        }).populate('author'); // <- populate campground author
+
         if(!campground) {
             req.flash('error', 'Cannot find that Campground!');
             return res.redirect('/campgrounds');
@@ -34,6 +41,7 @@ module.exports = {
     // POST add campground page
     addCampground: asyncErrorWrapper (async (req, res) => {
         const newCampground = new Campground(req.body);
+        newCampground.author = req.user._id;
         console.log(`new campground: ${newCampground}`);
         await newCampground.save();
         req.flash('success', 'Campground created!');

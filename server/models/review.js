@@ -4,8 +4,15 @@ const Schema = mongoose.Schema;
 
 // create campground schema model
 const ReviewSchema = Schema({
-    review: String,
-    rating: Number
+    review: {
+        type: String,
+        trim: true
+    },
+    rating: Number,
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    }
 },
 {
     collection: "reviews"

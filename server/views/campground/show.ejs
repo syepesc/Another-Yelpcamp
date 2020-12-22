@@ -1,8 +1,12 @@
 <div class="row">
-    <div class="col-6">
-
+    <div class="col">
         <%- include('../partials/messages.ejs') %>
-        
+    </div>
+</div>
+
+<div class="row">    
+
+    <div class="col-6">
         <!-- CAMPGROUND -->
         <div class="card mb-3">
             <img src="<%= campground.image %>" class="card-img-top" alt="...">
@@ -14,12 +18,14 @@
                 <li class="list-group-item text-muted"><%= campground.location %></li>
                 <li class="list-group-item">$<%= campground.price %><small class="text-muted"> /night</small></li>
             </ul>
-            <div class="card-body">
-                <a class="card-link btn btn-info" href="/campgrounds/edit/<%= campground._id %>">Edit</a>
-                <form class="d-inline" action="/campgrounds/delete/<%= campground._id %>?_method=DELETE" method="POST">
-                    <button class="btn btn-danger">Delete</button>
-                </form>
-            </div>
+            <% if (user && campground.author.equals(user._id)) { %> 
+                <div class="card-body">
+                    <a class="card-link btn btn-info" href="/campgrounds/edit/<%= campground._id %>">Edit</a>
+                    <form class="d-inline" action="/campgrounds/delete/<%= campground._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            <% } %>
             <div class="card-footer text-muted">
                 2 days ago
             </div>
@@ -49,11 +55,14 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h5>Rating: <%= review.rating %></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">By: <%= review.author.email %> </h6>
                     <p><%= review.review %></p>
-
-                    <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-                        <button class="btn btn-danger" type="submit">Delete</button>
-                    </form>
+        
+                    <% if (user && campground.author.equals(user._id) || review.author.equals(user._id)) { %> 
+                        <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+                    <% } %>
                 </div>
             </div>
         <% } %>

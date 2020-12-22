@@ -26,10 +26,11 @@ module.exports = {
         const { ...formInput } = req.body;
         const campground = await Campground.findById(req.params.id);
         const newReview = new Review({ review: formInput.review, rating: formInput.rating });
+        newReview.author = req.user._id;
         campground.reviews.push(newReview);
         await newReview.save();
         await campground.save();
-        req.flash('success_msg', 'Review added!');
+        req.flash('success', 'Review added!');
         res.redirect(`/campgrounds/${campground._id}`);
     }),
 
@@ -38,7 +39,7 @@ module.exports = {
         const { id, reviewId } = req.params;
         await Campground.findByIdAndUpdate(id, { $pull: {reviews: reviewId } }); // using mongo query to delete an element from an array 
         await Review.findByIdAndDelete(reviewId);
-        req.flash('success_msg', 'Review deleted!');
+        req.flash('success', 'Review deleted!');
         res.redirect(`/campgrounds/${id}`)
     })
 }

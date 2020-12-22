@@ -51,12 +51,3 @@ module.exports = (passport) => {
         });
     });
 }
-
-module.exports.ensureAuthentication = function(req, res, next) {
-    if(req.isAuthenticated()) {
-        return next();
-    } else {
-        req.flash('error', 'Please login to access this content');
-        res.redirect('/login');
-    }
-}
