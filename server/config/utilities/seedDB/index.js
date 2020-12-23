@@ -30,9 +30,18 @@ module.exports.seedDB = async () => {
             author: '5fdf856a3b87693135468b05',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(places)}`,
-            image: `https://source.unsplash.com/collection/483251`, // taking the images from unsplash.com
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro, possimus! Deleniti corrupti aspernatur eum id blanditiis eius odio magni dolores esse vel exercitationem expedita, ad ipsam tempora. Eius, laborum expedita.',
-            price: Math.floor(Math.random() * 20) + 10
+            price: Math.floor(Math.random() * 20) + 10,
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/dnulc0cuy/image/upload/v1608747726/YELPCAMP/mlkharlgofxsbowzxoet.png',
+                    filename: 'YELPCAMP/mlkharlgofxsbowzxoet'
+                },
+                {
+                    url: 'https://res.cloudinary.com/dnulc0cuy/image/upload/v1608747725/YELPCAMP/gdlmdjsz83r1f9exxk5r.jpg',
+                    filename: 'YELPCAMP/gdlmdjsz83r1f9exxk5r'
+                }
+            ]
         })
         await campground.save()
         .then(console.log(`Campground #${i+1}: {${campground.location}} {${campground.title}} - saved.`));

@@ -1,5 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
+const multer = require('multer');
+const { storage } = require('../config/utilities/cloudinary');
+const upload = multer({ storage });
+
 
 // import campground controllers
 const campgroundControllers = require('../controllers/campground');
@@ -18,7 +22,7 @@ router.get('/', campgroundControllers.displayAllCampgrounds);
 router.get('/add', ensureAuthentication, campgroundControllers.displayAddCampground);
 
 // POST add campground page
-router.post('/add', ensureAuthentication, form.validate(form.campgroundForm), campgroundControllers.addCampground);
+router.post('/add', ensureAuthentication, upload.array('image'), form.validate(form.campgroundForm), campgroundControllers.addCampground);
 
 // GET campground by ID
 router.get('/:id', campgroundControllers.displayCampgroundById);
@@ -27,7 +31,7 @@ router.get('/:id', campgroundControllers.displayCampgroundById);
 router.get('/edit/:id', ensureAuthentication, isCampgroundAuthor, campgroundControllers.displayEditCampground);
 
 // PUT edit campground page
-router.put('/edit/:id', ensureAuthentication, isCampgroundAuthor, form.validate(form.campgroundForm), campgroundControllers.editCampground);
+router.put('/edit/:id', ensureAuthentication, isCampgroundAuthor, upload.array('image'), form.validate(form.campgroundForm), campgroundControllers.editCampground);
 
 // DELETE edit campground page
 router.delete('/delete/:id', ensureAuthentication, isCampgroundAuthor, campgroundControllers.deleteCampground);

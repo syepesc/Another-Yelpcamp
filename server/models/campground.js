@@ -7,7 +7,10 @@ const Review = require('./review');
 // create campground schema model
 const CampgroundSchema = Schema({
     title: String,
-    image: String,
+    images: [{
+        url: String,
+        filename: String
+    }],
     price: Number,
     description: String,
     location: String,

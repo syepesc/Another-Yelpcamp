@@ -41,6 +41,7 @@ module.exports = {
     // POST add campground page
     addCampground: asyncErrorWrapper (async (req, res) => {
         const newCampground = new Campground(req.body);
+        newCampground.images = req.files.map(file => ({ url: file.path, filename: file.filename })); // with cloudinary + multer we got now access to 'files' field on the req object to extract the image data
         newCampground.author = req.user._id;
         console.log(`new campground: ${newCampground}`);
         await newCampground.save();
@@ -62,6 +63,9 @@ module.exports = {
             req.flash('error', 'Cannot find that Campground!');
             return res.redirect('/campgrounds');
         };
+        const images = req.files.map(file => ({ url: file.path, filename: file.filename })); // must create a separate array of images to avoid merging one array of images (updated images) into another array of images (campground model)
+        updatedCampground.images.push(...images); // spread the new array of images into the existing one (campground images)
+        await updatedCampground.save();
         req.flash('success', 'Campground updated!');
         res.redirect(`/campgrounds/${updatedCampground._id}`);
     }),

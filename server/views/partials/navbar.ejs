@@ -5,7 +5,6 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <div class="navbar-nav">
-        <a class="nav-link" href="/">Home</a>
         <a class="nav-link" href="/campgrounds">Campgrounds</a>
         <a class="nav-link" href="/campgrounds/add">Add Campground</a>
       </div>
@@ -15,7 +14,7 @@
           <a class="nav-link" href="/login">Login</a>
           <a class="nav-link" href="/register">Register</a>
         <% } else { %>
-          <a class="nav-link" href="#"><i class="fas fa-user fa-lg"></i></a>
+          <a class="nav-link" href="#"><%= user.email %> &nbsp; <i class="fas fa-user fa-lg"></i></a>
           <a class="nav-link" href="/logout">Logout</a>
         <% } %>
       </div>
