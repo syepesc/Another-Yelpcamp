@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
+const { schema } = require('./review');
 const Schema = mongoose.Schema; // change variable name
 // import Review schema
 const Review = require('./review');
 
 
 // create campground schema model
-const CampgroundSchema = Schema({
+const CampgroundSchema = new Schema({
     title: String,
     images: [{
         url: String,
@@ -21,6 +22,9 @@ const CampgroundSchema = Schema({
     reviews: [{
         type: Schema.Types.ObjectId,
         ref: 'Review'
+    }],
+    deleteImages: [{
+        type: [String]
     }],
     dateCreated: {
         type: Date,

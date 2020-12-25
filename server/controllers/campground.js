@@ -1,9 +1,12 @@
 const express = require('express');
+const chalk = require('chalk');
 
 // import campground model
 const Campground = require('../models/campground');
 // import error handler
 const { asyncErrorWrapper } = require('../config/utilities/errorHandler');
+// import cloudinary
+const { cloudinary } = require('../config/utilities/cloudinary');
 
 
 
@@ -63,9 +66,21 @@ module.exports = {
             req.flash('error', 'Cannot find that Campground!');
             return res.redirect('/campgrounds');
         };
+        // add images
         const images = req.files.map(file => ({ url: file.path, filename: file.filename })); // must create a separate array of images to avoid merging one array of images (updated images) into another array of images (campground model)
         updatedCampground.images.push(...images); // spread the new array of images into the existing one (campground images)
         await updatedCampground.save();
+        console.log('UPDATE',chalk.red(updatedCampground));
+        // delete images
+        if (req.body.deleteImages){
+            // delete images from cloudinary
+            for (let filename of req.body.deleteImages) {
+                await cloudinary.uploader.destroy(filename);
+            }
+            // delete images from db object
+            await updatedCampground.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } }); // mongo command pull (delete from array) from images: the field that have filename: equal to deleteImages array
+        }
+
         req.flash('success', 'Campground updated!');
         res.redirect(`/campgrounds/${updatedCampground._id}`);
     }),

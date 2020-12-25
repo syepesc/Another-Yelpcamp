@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 
 // create campground schema model
-const ReviewSchema = Schema({
+const ReviewSchema = new Schema({
     review: {
         type: String,
         trim: true

@@ -1,5 +1,5 @@
 <div class="row">
-    <div class="col-6 offset-3">
+    <div class="col-8 offset-2">
         <h1 class="text-center">Edit Campground</h1>
         
         <form action="/campgrounds/edit/<%= campground._id %>?_method=PUT" method="POST" enctype="multipart/form-data" novalidate class="validated-form">
@@ -14,10 +14,10 @@
                 <div class="valid-feedback">Looks good!</div>
             </div>
             <div class="mb-3">
-                <p>Image</p>
+                <p>Add Image(s)</p>
                 <div class="input-group mb-3">
                     <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="image" name="image" multiple required>
+                      <input type="file" class="custom-file-input" id="image" name="image" multiple>
                       <label class="custom-file-label" for="image">Choose file</label>
                     </div>
                 </div>
@@ -37,6 +37,20 @@
                 <textarea class="form-control" type="text" id="description" rows="6" name="description" required><%= campground.description%></textarea>
                 <div class="valid-feedback">Looks good!</div>
             </div>
+
+            <p>Delete Image(s)</p>
+            <div class="row mb-3">
+                <% campground.images.forEach((image, i) => { %>
+                    <div class="card col-sm-6 mx-auto mb-3" style="width: 18rem;">
+                        <img src="<%= image.url %>" class="card-img-top" alt="">
+                        <div class="card-body text-center">
+                            <label class="card-text" for="img-<%= i %>">Delete</label>
+                            <input type="checkbox" id="img-<%= i %>" name="deleteImages" value="<%= image.filename %>">
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+
             <div class="mb-3">
                 <button class="btn btn-info">Update Campground</button>
                 <button class="btn btn-warning" type="reset">Reset form</button>
