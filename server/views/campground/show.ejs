@@ -52,6 +52,9 @@
     </div>
 
     <div class="col-md-6">
+        <!-- GEO MAP -->
+        <div id='map' style='width: 100%; height: 300px;' class="mb-3"></div>
+
         <!-- REVIEW FORM -->
         <h2>Leave a Review</h2>
         <form action="/campgrounds/<%= campground._id %>/reviews" method="POST" novalidate class="validated-form">
@@ -100,3 +103,9 @@
         <% } %>
     </div>
 </div>
+
+<script>
+    const mapBoxToken = `<%- process.env.MAPBOX_TOKEN %>`;
+    const campground = <%- JSON.stringify(campground) %>;
+</script>
+<script src="/scripts/mapBox.js"></script>

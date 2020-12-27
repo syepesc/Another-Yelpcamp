@@ -32,6 +32,7 @@ module.exports.seedDB = async () => {
             title: `${sample(descriptors)} ${sample(places)}`,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro, possimus! Deleniti corrupti aspernatur eum id blanditiis eius odio magni dolores esse vel exercitationem expedita, ad ipsam tempora. Eius, laborum expedita.',
             price: Math.floor(Math.random() * 20) + 10,
+            geometry: { coordinates: [ -80.1937, 25.7743 ], type: 'Point' },
             images: [
                 {
                     url: 'https://res.cloudinary.com/dnulc0cuy/image/upload/v1608747726/YELPCAMP/mlkharlgofxsbowzxoet.png',

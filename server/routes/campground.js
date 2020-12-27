@@ -22,7 +22,7 @@ router.get('/', campgroundControllers.displayAllCampgrounds);
 router.get('/add', ensureAuthentication, campgroundControllers.displayAddCampground);
 
 // POST add campground page
-router.post('/add', ensureAuthentication, upload.array('image'), form.validate(form.campgroundForm), campgroundControllers.addCampground);
+router.post('/add', ensureAuthentication, upload.array('image'), campgroundControllers.addCampground);
 
 // GET campground by ID
 router.get('/:id', campgroundControllers.displayCampgroundById);

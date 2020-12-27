@@ -15,6 +15,17 @@ const CampgroundSchema = new Schema({
     price: Number,
     description: String,
     location: String,
+    geometry:{
+        type: {
+            type: String,
+            enum: ['Point'],
+            require: true
+        },
+        coordinates: {
+            type: [Number],
+            require: true
+        }
+    },
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -35,14 +46,11 @@ const CampgroundSchema = new Schema({
     collection: "campgrounds"
 });
 
-const Campground = mongoose.model('Campground', CampgroundSchema);
-module.exports = Campground;
-
 
 // QUERY FUNCTIONS
 // after (post) we delete a campground we are going to use this middleware to delete all the reviews of the campground
 CampgroundSchema.post('findOneAndDelete', async (campgroundDeleted) => {
-    console.log(campgroundDeleted);
+    console.log('DELETING THIS:', campgroundDeleted);
     
     if (campgroundDeleted) {
         const reviewsFromDeletedCampground = campgroundDeleted.reviews;
@@ -52,5 +60,9 @@ CampgroundSchema.post('findOneAndDelete', async (campgroundDeleted) => {
         });
     }
 })
+
+
+const Campground = mongoose.model('Campground', CampgroundSchema);
+module.exports = Campground;
     
 

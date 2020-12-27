@@ -86,7 +86,7 @@ app.use(passport.session());
 // Global variables
 app.use((req, res, next) => {
   // fix for redirecting url
-  if (!['/login'].includes(req.originalUrl)) {
+  if (!['/login', '/', '/favicon.ico'].includes(req.originalUrl)) {
     if (req.query.isEmpty) {
       req.session.returnTo = req.originalUrl; 
     } else {

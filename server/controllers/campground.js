@@ -1,4 +1,7 @@
 const express = require('express');
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 const chalk = require('chalk');
 
 // import campground model
@@ -43,7 +46,12 @@ module.exports = {
 
     // POST add campground page
     addCampground: asyncErrorWrapper (async (req, res) => {
+        const geoData = await geocoder.forwardGeocode({
+            query: req.body.location,
+            limit: 1
+        }).send();
         const newCampground = new Campground(req.body);
+        newCampground.geometry = geoData.body.features[0].geometry;
         newCampground.images = req.files.map(file => ({ url: file.path, filename: file.filename })); // with cloudinary + multer we got now access to 'files' field on the req object to extract the image data
         newCampground.author = req.user._id;
         console.log(`new campground: ${newCampground}`);
