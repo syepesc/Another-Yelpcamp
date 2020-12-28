@@ -1,26 +1,28 @@
-<div class="row">
-    <div class="col-6 offset-3">
-        <h1 class="text-center">Register</h1>
-        
-        <%- include('../partials/messages') %>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <h1 class="text-center">Register</h1>
+            
+            <%- include('../partials/messages') %>
 
-        <form action="/register" method="POST" novalidate class="validated-form">
-            <div class="mb-3">
-                <label class="form-label" for="email">Email</label>
-                <input class="form-control" type="email" id="email" name="email" required>
-                <div class="valid-feedback">Looks good!</div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="password">Password</label>
-                <input class="form-control" type="password" id="password" name="password" required>
-                <div class="valid-feedback">Looks good!</div>
-            </div>
-            <div class="mb-3">
-                <button class="btn btn-success">Register</button>
-            </div>
-        </form>
-        
-        <p>Already have an Account? <a href="/login">Login</a></p>
-        <a href="/campgrounds">Back to all Campgrounds</a>
+            <form action="/register" method="POST" novalidate class="validated-form">
+                <div class="mb-3">
+                    <label class="form-label" for="email">Email</label>
+                    <input class="form-control" type="email" id="email" name="email" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="password">Password</label>
+                    <input class="form-control" type="password" id="password" name="password" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success">Register</button>
+                </div>
+            </form>
+            
+            <p>Already have an Account? <a href="/login">Login</a></p>
+            <a href="/campgrounds">Back to all Campgrounds</a>
+        </div>
     </div>
 </div>
