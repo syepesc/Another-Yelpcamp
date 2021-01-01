@@ -5,7 +5,9 @@ mapboxgl.accessToken = mapBoxToken;
     center: [-103.59179687498357, 40.66995747013945],
     zoom: 3
 });
- 
+
+map.addControl(new mapboxgl.NavigationControl());
+
 map.on('load', function () {
     // Add a new source from our GeoJSON data and
     // set the 'cluster' option to true. GL-JS will
@@ -99,27 +101,21 @@ map.on('load', function () {
     // the location of the feature, with
     // description HTML from its properties.
     map.on('click', 'unclustered-point', function (e) {
-    var coordinates = e.features[0].geometry.coordinates.slice();
-    var mag = e.features[0].properties.mag;
-    var tsunami;
-    
-    if (e.features[0].properties.tsunami === 1) {
-    tsunami = 'yes';
-    } else {
-    tsunami = 'no';
-    }
-    
-    // Ensure that if the map is zoomed out such that
-    // multiple copies of the feature are visible, the
-    // popup appears over the copy being pointed to.
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
-    
-    new mapboxgl.Popup()
-    .setLngLat(coordinates)
-    .setHTML('magnitude: ' + mag + '<br>Was there a tsunami?: ' + tsunami)
-    .addTo(map);
+        const popUpText = e.features[0].properties.popUpMarkup;
+        const coordinates = e.features[0].geometry.coordinates.slice();
+
+        
+        // Ensure that if the map is zoomed out such that
+        // multiple copies of the feature are visible, the
+        // popup appears over the copy being pointed to.
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+        
+        new mapboxgl.Popup()
+        .setLngLat(coordinates)
+        .setHTML(popUpText)
+        .addTo(map);
     });
     
     map.on('mouseenter', 'clusters', function () {

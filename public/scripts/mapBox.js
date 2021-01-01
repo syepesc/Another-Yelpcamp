@@ -8,6 +8,8 @@ var map = new mapboxgl.Map({
     zoom: 9 // starting zoom
 });
 
+map.addControl(new mapboxgl.NavigationControl());
+
 new mapboxgl.Marker() 
     .setLngLat(campground.geometry.coordinates)
     .setPopup(
@@ -16,4 +18,5 @@ new mapboxgl.Marker()
             `<h6>${campground.title}</h6><p>${campground.location}</p>`
         )
     )
-    .addTo(map)
+.addTo(map)
+

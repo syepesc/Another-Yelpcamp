@@ -43,9 +43,13 @@ const CampgroundSchema = new Schema({
     }
 },
 {
-    collection: "campgrounds"
+    collection: "campgrounds",
+    toJSON: { virtuals: true }
 });
 
+CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
+    return `<strong><a href="/campgrounds/${this._id}">${this.title}</a><strong><p>${this.location}</p>`
+});
 
 // QUERY FUNCTIONS
 // after (post) we delete a campground we are going to use this middleware to delete all the reviews of the campground
