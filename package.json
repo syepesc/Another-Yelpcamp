@@ -18,6 +18,7 @@
     "ejs": "~2.6.1",
     "express": "~4.16.1",
     "express-ejs-layouts": "^2.5.0",
+    "express-mongo-sanitize": "^2.0.1",
     "express-session": "^1.17.1",
     "http-errors": "~1.6.3",
     "joi": "^17.3.0",
@@ -30,6 +31,7 @@
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "popper.js": "^1.16.1",
+    "sanitize-html": "^2.3.0",
     "starability": "^2.4.0"
   },
   "devDependencies": {

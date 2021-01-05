@@ -14,6 +14,7 @@ const { Cookie } = require('express-session');
 const passport = require('passport');
 const chalk = require('chalk');
 const { isEmptyObject } = require('jquery');
+const  mongoSanitize = require('express-mongo-sanitize');
 require('dotenv').config();
 
 // Initialize app with express
@@ -58,6 +59,7 @@ require('./utilities/passport')(passport);
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(mongoSanitize());
 app.use(express.static(path.join(__dirname, '../../node_modules'))); // added to predetermine the path for libraries used inside node modules
 app.use(express.static(path.join(__dirname, '../../public'))); // added to predetermine the path for libraries used inside node modules
 
@@ -71,6 +73,7 @@ app.use(session({
   saveUninitialized: true,
   cookie: {
     httpOnly: true, // does not reveal cookies in case of cross scripting flaw 
+    // secure: true, // this mean that cookies could only be change using HTTPS
     expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // (1 week) // milliseconds * seconds * minutes * hours * days
     maxAge: 1000 * 60 * 60 * 24 * 7 // (1 week)
   }
@@ -93,7 +96,7 @@ app.use((req, res, next) => {
       req.session.returnTo = req.path;
     }
   };
-  
+
   res.locals.user = req.user ? req.user : ''; // pass user on each request
   res.locals.success = req.flash('success'); // flash success messages
   res.locals.error = req.flash('error'); // flash error messages
