@@ -35,11 +35,11 @@ module.exports.seedDB = async () => {
             geometry: { coordinates: [ cities[random1000].longitude, cities[random1000].latitude ], type: 'Point' },
             images: [
                 {
-                    url: 'https://res.cloudinary.com/dnulc0cuy/image/upload/v1608747726/YELPCAMP/mlkharlgofxsbowzxoet.png',
+                    url: 'https://res.cloudinary.com/dnulc0cuy/image/upload/v1609981757/YELPCAMP/big-one_ynu8dx.jpg',
                     filename: 'YELPCAMP/mlkharlgofxsbowzxoet'
                 },
                 {
-                    url: 'https://res.cloudinary.com/dnulc0cuy/image/upload/v1608747725/YELPCAMP/gdlmdjsz83r1f9exxk5r.jpg',
+                    url: 'https://res.cloudinary.com/dnulc0cuy/image/upload/v1609981755/YELPCAMP/lighting_yakmjs.jpg',
                     filename: 'YELPCAMP/gdlmdjsz83r1f9exxk5r'
                 }
             ]
