@@ -13,8 +13,8 @@ const session = require('express-session');
 const { Cookie } = require('express-session');
 const passport = require('passport');
 const chalk = require('chalk');
-const { isEmptyObject } = require('jquery');
 const  mongoSanitize = require('express-mongo-sanitize');
+const mongoSessionStorage = require('connect-mongo')(session);
 const helmet = require('helmet');
 require('dotenv').config();
 
@@ -29,9 +29,9 @@ console.log('App Started...');
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // DB Config
-const DB = process.env.MONGO_URI;
+const DB_URL = process.env.MONGO_URL;
 // Connect to Mongo
-mongoose.connect(DB, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(DB_URL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 const mongoDB = mongoose.connection;
 mongoDB.on('error', console.error.bind(console, 'Connection Error: '));
@@ -88,6 +88,18 @@ const connectSrcUrls = [
   "https://events.mapbox.com/",
 ];
 const fontSrcUrls = [];
+// TO PREVENT ALL THE ABOVE WE USE HELMET AND BY DEFAULT PREVENTS "EVERYTHING"
+// app.use(helmet.contentSecurityPolicy());
+// app.use(helmet.dnsPrefetchControl());
+// app.use(helmet.expectCt());
+// app.use(helmet.frameguard());
+// app.use(helmet.hidePoweredBy());
+// app.use(helmet.hsts());
+// app.use(helmet.ieNoOpen());
+// app.use(helmet.noSniff());
+// app.use(helmet.permittedCrossDomainPolicies());
+// app.use(helmet.referrerPolicy());
+// app.use(helmet.xssFilter());
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -108,17 +120,23 @@ app.use(
     },
   })
 );
-app.use(mongoSanitize());
+
+app.use(mongoSanitize()); // TO PREVENT MONGO INJECTION ATTACK
+// TODO - MISSING CROSS SITE SCRIPTING - XSS
 
 // Method Override
 app.use(methodOverride('_method'));
 
 // Express session
 app.use(session({
+  store: new mongoSessionStorage({
+    url: process.env.MONGO_URL,
+    touchAfter: 24 * 60 * 60 // prevent store of session until one day has passed
+  }),
   name: 'sessionId',
   secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false, // don't create session until something stored
+  resave: false, //don't save session if unmodified
   cookie: {
     httpOnly: true, // does not reveal cookies in case of cross scripting flaw 
     // secure: true, // this mean that cookies could only be change using HTTPS
@@ -148,6 +166,8 @@ app.use((req, res, next) => {
   res.locals.user = req.user ? req.user : ''; // pass user on each request
   res.locals.success = req.flash('success'); // flash success messages
   res.locals.error = req.flash('error'); // flash error messages
+  console.log(chalk.green('//// SESSION:'));
+  console.dir(req.session);
   next();
 });
 
